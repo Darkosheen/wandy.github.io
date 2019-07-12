@@ -2077,7 +2077,7 @@ function carregar()
  request.addEventListener("load", ImportarProdutos, false);
 }
 
-function ImportarProdutos(evt)
+function ImportarProdutos(categ)
 {
  // console.log("Evento: "+ evt);
  //if(!evt)
@@ -2095,26 +2095,28 @@ var abc = localStorage.getItem("teste4")
 //reader = new FileReader();
 //reader.readAsBinaryString(request.response);
 //reader.onload = function(){
- var categoriaCSV = "not"
+ //var categoriaCSV = categ;
 //Incluir todas as categorias possiveis
- if(categoriaCSV == "5PMale")
- {
-    categCSV = "5Pockets_Male";
- }
-if(categoriaCSV == "5PFemale")
+ if(categ == 1)
  {
     categCSV = "5Pockets_Female";
  }
- if(categoriaCSV == "FootMale")
+if(categ == 2)
+ {
+    categCSV = "Collection_Male";
+
+ }
+ if(categ  == 3)
  {
     categCSV = "Foot_Male";
  }
-if(categoriaCSV == "CollectionMale")
+if(categ  == 5)
  {
-    categCSV = "Collection_Male";
+    
+     categCSV = "5Pockets_Male";
  }
-
- categCSV = "Collection_Male";
+ console.log("Esta é a categoria: " + categ)
+ //categCSV = categ;
  produtos = abc;
  produto = [];
  pos =34;
@@ -2223,7 +2225,7 @@ console.log(produto);
      nodeDivProduto.appendChild(nodeIconExpand);
      nodeDivProduto.appendChild(nodeCores);
      document.getElementById(categCSV).appendChild(nodeDivProduto);
-     console.log("O uIndex está no " + uIndex + " e a CategCSV está no: " + categCSV);
+     console.log("CategCSV está no: " + categCSV);
      console.log(g);
 
  Pnome += 17;
@@ -2240,12 +2242,14 @@ console.log(produto);
  }
 }
 
-// if(uIndex == 3)
-// {
-// }else{
-// uIndex += 1;
-// carregar();
-// }
+ if(uIndex == 2)
+ {
+ }else{
+ uIndex += 1;
+ xc += 1;
+ listMajors(1)
+
+ }
 
 }
 //}
@@ -2253,7 +2257,7 @@ console.log(produto);
 
 var categoriaAtual = "5Pockets_Male";
 
-
+uIndex = 0
 
 function filtrar2()
 {
@@ -2489,7 +2493,7 @@ x.parentElement.parentElement.getElementsByTagName("td")[0].style.boxShadow = "0
           authorizeButton.style.display = 'none';
          // signoutButton.style.display = 'block';
           listMajors();
-          ImportarProdutos()
+          //ImportarProdutos()
           fecharInicio()
 
           
@@ -2523,20 +2527,27 @@ x.parentElement.parentElement.getElementsByTagName("td")[0].style.boxShadow = "0
         var pre = document.getElementById('content');
         var textContent = document.createTextNode(message + '\n');
         pre.appendChild(textContent);
-        console.log(document.getElementById("content").innerText)
 
         var content = document.getElementById("content").innerText.replace(/,/g,";");
-            localStorage.setItem("teste4",content.replace(/\s+/g, ''));
+        localStorage.setItem("teste4",content.replace(/\s+/g, ''));
+        
+
       }
 
-      /**
+      /*
        * Print the names and majors of students in a sample spreadsheet:
        * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
        */
-      function listMajors() {
+      xc = 0;
+      var categorias = ["5Pockets_Female","Collection_Male"]
+      function listMajors(xcf) {
+        if(xcf ==1){
+        xc += xcf;
+      }
+
         gapi.client.sheets.spreadsheets.values.get({
           spreadsheetId: '1ZI5Vt3vmjSiEtrUiF5aGbAayzvAmXsjDbkrbfCvkZpE',
-          range: 'Collection_Male!A1:R20',
+          range: categorias[xc]+'!A1:R20',
         }).then(function(response) {
           var range = response.result;
           if (range.values.length > 0) {
@@ -2547,6 +2558,9 @@ x.parentElement.parentElement.getElementsByTagName("td")[0].style.boxShadow = "0
               appendPre(row);
               
             }
+              
+        ImportarProdutos(xc+1)
+
             
           } else {
             appendPre('No data found.');
@@ -2555,6 +2569,7 @@ x.parentElement.parentElement.getElementsByTagName("td")[0].style.boxShadow = "0
           appendPre('Error: ' + response.result.error.message);
         });
       }
+      
 
     </script>
 
