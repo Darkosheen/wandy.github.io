@@ -50,10 +50,11 @@
 		}
 
 		nav#nav{
-			height: 100vh;
-    		width: 155px;
-    		background-color: white;
-    		box-shadow: 0 0 6px 0px #949191;
+			    height: 100vh;
+    width: 25vh;
+    position: relative;
+    background-color: white;
+    box-shadow: 0 0 6px 0px #949191;
     		
 		}
 		nav#nav-titulo{
@@ -112,6 +113,36 @@ h3#aba-titulo {
 	    width: 100%;
 }
 
+
+table#clientes-tabela {
+    margin-left: 15px;
+    font: normal normal 400 15px/1.286em Roboto,sans-serif;
+}
+
+
+tr.linhaCliente {
+    background-color: white;
+    /* width: 637px; */
+    height: 55px;
+    font-size: 15px;
+    text-align: center;
+}
+th{
+	background-color: #efefef;
+	color: #828282;
+	font: normal normal 400 14px/1.286em Roboto,sans-serif;
+}
+
+td.fantasia{
+
+}
+td.cidade{
+
+}
+td.informacoes{
+
+}
+
 	</style>
 </head>
 <body style="margin:0;">
@@ -148,19 +179,13 @@ h3#aba-titulo {
 	<table id="clientes-tabela" class="display">
     <thead>
         <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
+            <th>NOME</th>
+            <th>CIDADE</th>
+            <th>TELEFONE</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-        </tr>
+        
     </tbody>
 </table>
 
@@ -273,21 +298,91 @@ h3#aba-titulo {
        * @param {string} message Text to be placed in pre element.
        */
       function appendPre(message) {
+
         var pre = document.getElementById('content');
         var textContent = document.createTextNode(message + '\n');
         pre.appendChild(textContent);
-
-        //tentar criar tabela apartir daqui
-
+        console.log(textContent)
+        textContentx = message
+        criarTabela(textContentx)
+        
       }
+      var textContentx
+      function criarTabela(textContent){
+      	var i = 0;
+      	var j = 0;
+        var colunas = 24;
+      	
+      	tabelaColuna = document.createElement("td");
 
+      	console.log(textContent)
+       var linha = [] 
+
+        console.log(linha)
+        	for(i = 0; i < 5; i++){
+
+              for(j;j<colunas;j++)
+              {
+
+              		 linha[[i,j]] =  textContent.split(",")[j];
+              		
+              }
+              colunas += 23
+          }
+          console.log(linha)
+
+          		var fantasiaPos = 7;
+          		var cidadePos = 4;
+          		var telefonePos = 11;
+          		var cont = 2;
+          		for(i = 0;i<5;i++)
+          		{  
+          			if(linha[[i,cont]]){
+          			
+          			tabelaLinha = document.createElement("tr");
+          			tabelaLinha.setAttribute("class","linhaCliente")
+          			
+          			//fantasia
+          			tabelaColuna = document.createElement("td");
+               		tabelaColuna.innerText = linha[[i,fantasiaPos]];
+               		tabelaColuna.setAttribute("class","fantasia")
+               		tabelaLinha.appendChild(tabelaColuna)
+
+               		//Cidade
+               		tabelaColuna = document.createElement("td");
+               		tabelaColuna.innerText = linha[[i,cidadePos]];
+               		tabelaColuna.setAttribute("class","cidade")
+               		tabelaLinha.appendChild(tabelaColuna)
+               		//informações
+               		tabelaColuna = document.createElement("td");
+               		tabelaColuna.innerText = linha[[i,telefonePos]];
+               		tabelaColuna.setAttribute("class","informacoes")
+               		tabelaLinha.appendChild(tabelaColuna)
+          			console.log(tabelaColuna.innerText)      
+
+
+
+               document.getElementById("clientes-tabela").getElementsByTagName("tbody")[0].appendChild(tabelaLinha); 
+
+                 fantasiaPos += 22;
+          		 cidadePos += 22;
+          		 telefonePos += 22;
+          		 cont += 23;
+          		}
+          	}
+                      	
+               
+                                 
+      
+       
+}
       /*
        * Print the names and majors of students in a sample spreadsheet:
        * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
        */
     
       function listMajors() {
-
+      	
         gapi.client.sheets.spreadsheets.values.get({
           spreadsheetId: '1kIxC0TIEiDXo0-g5-9dBMovrvas5FftZSMz03DOxjjw',
           range: 'mailling!A1:W23',
@@ -296,12 +391,13 @@ h3#aba-titulo {
           if (range.values.length > 0) {
             //appendPre('Showroom');
             for (i = 0; i < range.values.length; i++) {
-              var row = range.values[i];
+              var row = row + range.values[i];
+
               // Print columns A and E, which correspond to indices 0 and 4.
-              appendPre(row);
+              
               
             }
-            
+            appendPre(row);
           } else {
             appendPre('No data found.');
           }
@@ -317,5 +413,7 @@ h3#aba-titulo {
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
+
+    <script type="text/javascript" src="https://raw.githubusercontent.com/CodeDotJS/instagram-profile-picture/master/index.js"></script>
 </body>
 </html>
