@@ -143,6 +143,11 @@ td.informacoes{
 
 }
 
+img.imgPerfilLojas{
+	    width: 48px;
+    border-radius: 30px;
+}
+
 	</style>
 </head>
 <body style="margin:0;">
@@ -224,6 +229,8 @@ td.informacoes{
       var signoutButton = document.getElementById('signout_button');
       var entrarBotao = document.getElementById('entrar_botao');
 
+      var textContentx;
+      
       /**
        *  On load, called to load the auth2 library and API client library.
        */
@@ -307,16 +314,57 @@ td.informacoes{
         criarTabela(textContentx)
         
       }
-      var textContentx
+      
+      var yes;
+      var getHTML = function ( url, callback ) {
+
+					// Feature detection
+					if ( !window.XMLHttpRequest ) return;
+
+					// Create new request
+					var xhr = new XMLHttpRequest();
+
+					// Setup callback
+					xhr.onload = function() {
+					if ( callback && typeof( callback ) === 'function' ) {
+						callback( this.responseXML );
+						//yes = this.responseXML
+						
+					
+					}
+				}
+
+					// Get the HTML
+					xhr.open( 'GET', url );
+					xhr.responseType = 'document';
+					xhr.send();
+
+				};
+
+						var linkFoto;
+      					var htmlTest;
+     					var virgula = false;
+      					var img;
+      					var fantasiaPos = 7;
+          				var fotoPos = 6;
+          				var cidadePos = 4;
+          				var telefonePos = 11;
+          				var cont = 2;
+          				var inf = 0;
+          				var linha = []
+          				var tabelaLinha;
+          				var tabelaColuna;
+          				
+
       function criarTabela(textContent){
       	var i = 0;
       	var j = 0;
         var colunas = 24;
       	
-      	tabelaColuna = document.createElement("td");
+      	//tabelaColuna = document.createElement("td");
 
       	console.log(textContent)
-       var linha = [] 
+       
 
         console.log(linha)
         	for(i = 0; i < 5; i++){
@@ -330,56 +378,109 @@ td.informacoes{
               colunas += 23
           }
           console.log(linha)
-
-          		var fantasiaPos = 7;
-          		var cidadePos = 4;
-          		var telefonePos = 11;
-          		var cont = 2;
-          		for(i = 0;i<5;i++)
+          	
+          		 
+      	
+          		for(inf = 0;inf<3;inf++)
           		{  
-          			if(linha[[i,cont]]){
+          			
+          			if(linha[[inf,cont]]){
+          				
+					
+          			console.log("aqui Linkfoto: "+ linkFoto)
+          			
           			
           			tabelaLinha = document.createElement("tr");
           			tabelaLinha.setAttribute("class","linhaCliente")
           			
-          			//fantasia
+          			//fantasia/foto
+          			
+
           			tabelaColuna = document.createElement("td");
-               		tabelaColuna.innerText = linha[[i,fantasiaPos]];
+          			
+
+               		tabelaColuna.innerText = linha[[inf,fantasiaPos]];
                		tabelaColuna.setAttribute("class","fantasia")
                		tabelaLinha.appendChild(tabelaColuna)
 
                		//Cidade
                		tabelaColuna = document.createElement("td");
-               		tabelaColuna.innerText = linha[[i,cidadePos]];
+               		tabelaColuna.innerText = linha[[inf,cidadePos]];
                		tabelaColuna.setAttribute("class","cidade")
                		tabelaLinha.appendChild(tabelaColuna)
                		//informações
                		tabelaColuna = document.createElement("td");
-               		tabelaColuna.innerText = linha[[i,telefonePos]];
+               		tabelaColuna.innerText = linha[[inf,telefonePos]];
                		tabelaColuna.setAttribute("class","informacoes")
                		tabelaLinha.appendChild(tabelaColuna)
-          			console.log(tabelaColuna.innerText)      
 
+          			console.log(linha[[inf,fantasiaPos]] + " index: "+inf+","+fantasiaPos)
 
-
-               document.getElementById("clientes-tabela").getElementsByTagName("tbody")[0].appendChild(tabelaLinha); 
-
-                 fantasiaPos += 22;
+          			
+                     document.getElementById("clientes-tabela").getElementsByTagName("tbody")[0].appendChild(tabelaLinha); 
+                  
+                  
+				//document.getElementById("clientes-tabela").getElementsByTagName("tbody")[0].appendChild(tabelaLinha); 
+				 fantasiaPos += 22;
           		 cidadePos += 22;
           		 telefonePos += 22;
           		 cont += 23;
+          		 fotoPos +=22;
+				
           		}
+
           	}
-                      	
-               
-                                 
-      
-       
+                 fotoPos = 6     	
+             for(inf = 0;inf<3;inf++)
+          		{  
+          				console.log("pos: "+inf+" fantasia: "+fantasiaPos)
+
+          		getHTML('https://www.instagram.com/'+linha[[inf,fotoPos]]+'/', function (response) {
+          			console.log("instagram: "+linha[[inf,fotoPos]]);
+				
+
+				
+				
+			    htmlTest = response.documentElement.innerHTML
+				var ix = htmlTest.search("profile_pic_url")	
+
+				virgula = false;
+				linkFoto = ""
+
+				
+				while(virgula != true)
+				{
+					linkFoto += htmlTest[ix]
+
+				if(htmlTest[ix] == ","){
+					virgula = true;
+				}
+					ix++;
+				}  
+
+                  var fotoRpl = linkFoto.split(":")[1] +":"+ linkFoto.split(":")[2].replace(/,/g,"")
+                   
+                    img = document.createElement("img");
+          		    img.setAttribute("src",fotoRpl.replace(/"/g,""))
+          		    img.setAttribute("class","imgPerfilLojas");
+          			
+
+          			
+                  document.getElementById("clientes-tabela").getElementsByTagName("tbody")[0].appendChild(img)               
+      })
+       fotoPos += 22;
 }
+
+}
+var allFotos = []
       /*
        * Print the names and majors of students in a sample spreadsheet:
        * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
        */
+
+      
+       	
+       
     
       function listMajors() {
       	
